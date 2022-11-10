@@ -4,11 +4,22 @@ class Hero {
   constructor({ game, position = 0 } = {}) {
     this.skin = '🤠'; // можете использовать любые emoji '💃'
     this.position = position;
+    this.posUD = 0;
     this.game = game;
   }
 
   tick() {
     this.game.boomerang.tick();
+  }
+
+  moveUp() {
+    this.posUD -= 1;
+    this.game.check();
+  }
+
+  moveDown() {
+    this.posUD += 1;
+    this.game.check();
   }
 
   moveLeft() {
@@ -26,6 +37,7 @@ class Hero {
   attack() {
     if (this.game.boomerang.condition === 'Static') {
       this.game.boomerang.position = this.position;
+      this.game.boomerang.posUD = this.posUD;
       this.game.boomerang.condition = 'Right';
     }
   }

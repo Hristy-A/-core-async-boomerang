@@ -5,9 +5,10 @@ class Enemy {
     this.game = game;
     this.generateSkin();
     this.position = game.trackLength;
-    this.moveEveryTick = 5;
-    this.minimalTick = 2;
+    this.moveEveryTick = 20;
+    this.minimalTick = 5;
     this.tickCount = 0;
+    this.posUD = 0;
   }
 
   tick() {
@@ -28,13 +29,23 @@ class Enemy {
     this.game.check();
   }
 
+  moveUp() {
+    this.posUD -= 1;
+    this.game.check();
+  }
+
+  moveDown() {
+    this.posUD += 1;
+    this.game.check();
+  }
+
   die() {
     this.generateSkin();
     this.position = this.game.trackLength;
+    this.posUD = Math.floor(Math.random() * 8);
     if (this.moveEveryTick > this.minimalTick) {
       this.moveEveryTick -= 1;
     }
-    // this.moveEveryTick = this.moveEveryTick > 1 ? this.moveEveryTick - 1 : this.moveEveryTick;
     console.log('Enemy is dead!');
   }
 }

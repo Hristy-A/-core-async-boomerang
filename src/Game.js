@@ -16,31 +16,52 @@ class Game {
     this.tickRate = tickRate;
     // TODO: write hero, enemy and view
     this.enemy = new Enemy({ game: this });
+
+    // for (let i = 0; i < 8; i += 1) {
+      this.enemy = new Enemy({ game: this });
+    // }
+
     this.view = new View(this);
     this.boomerang = new Boomerang({ game: this });
     this.hero = new Hero({ game: this }); // Герою можно аргументом передать бумеранг.
     this.track = [];
     this.regenerateTrack();
-    this.testEnemy = new Enemy({ game: this });
   }
 
   regenerateTrack() {
     // Сборка всего необходимого (герой, враг(и), оружие)
     // в единую структуру данных
-    this.track = new Array(this.trackLength).fill(' ');
-    this.track[this.enemy.position] = this.enemy.skin;
+    this.track = [[...new Array(this.trackLength).fill(' ')],
+      [...new Array(this.trackLength).fill(' ')],
+      [...new Array(this.trackLength).fill(' ')],
+      [...new Array(this.trackLength).fill(' ')],
+      [...new Array(this.trackLength).fill(' ')],
+      [...new Array(this.trackLength).fill(' ')],
+      [...new Array(this.trackLength).fill(' ')],
+      [...new Array(this.trackLength).fill(' ')]];
+    this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
+    // this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
+    // this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
+    // this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
+    // this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
+    // this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
+    // this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
+    // this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
+    
+    
+    
+    
     if (this.boomerang.condition !== 'Static') {
-      this.track[this.boomerang.position] = this.boomerang.skin;
+      this.track[this.boomerang.posUD][this.boomerang.position] = this.boomerang.skin;
     }
-    this.track[this.hero.position] = this.hero.skin;
-    this.track[this.testEnemy.position] = this.testEnemy.skin;
+    this.track[this.hero.posUD][this.hero.position] = this.hero.skin;
   }
 
   check() {
-    if (this.hero.position === this.enemy.position) {
+    if (this.hero.position === this.enemy.position && this.hero.posUD === this.enemy.posUD) {
       this.hero.die(this.intervalPlay);
     }
-    if (this.boomerang.position === this.enemy.position) {
+    if (this.boomerang.position === this.enemy.position && this.boomerang.posUD === this.enemy.posUD) {
       this.enemy.die();
       this.boomerang.condition = 'Left';
     }
@@ -48,7 +69,12 @@ class Game {
       this.boomerang.condition = 'Static';
       this.boomerang.position = -1;
     }
-    this.testEnemy.position -= 1;
+    if (this.boomerang.position - this.hero.position >= 10) {
+      this.boomerang.condition = 'Left';
+    }
+    if (this.enemy.position <= 0) {
+      this.enemy.die();
+    }
   }
 
   update() {

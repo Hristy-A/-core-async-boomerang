@@ -11,6 +11,8 @@ const keyboard = {
   d: (game) => game.hero.moveRight(),
   a: (game) => game.hero.moveLeft(),
   q: (game) => game.hero.attack(),
+  w: (game) => game.hero.moveUp(),
+  s: (game) => game.hero.moveDown(),
 };
 
 // Какая-то функция.

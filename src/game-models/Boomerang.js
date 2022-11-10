@@ -11,6 +11,7 @@ class Boomerang {
     // this.posUD = 0;
     this.moveEveryTick = 2;
     this.tickCount = 1;
+    this.posUD = 0;
   }
 
   tick() {
