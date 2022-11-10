@@ -36,23 +36,28 @@ class Repository {
       raw: true,
     });
     // console.log(player, created);
+    let res;
     if (created) {
       await Game.create({
         score: 0,
         enemies_killed: 0,
         player_id: player.id,
       });
-      const newPlayer = Player.findAll({
+      const newPlayer = await Player.findAll({
         attributes: ['name'],
         include: {
           model: PlayerSkin,
           attributes: ['skin'],
         },
         where: { name: playerName },
+        raw: true,
       });
-      return new PlayerDTO(newPlayer.name, newPlayer['PlayerSkin.skin']);
+      res = new PlayerDTO(newPlayer[0].name, newPlayer[0]['PlayerSkin.skin']);
+    } else {
+      res = new PlayerDTO(player.name, player['PlayerSkin.skin']);
     }
-    return new PlayerDTO(player.name, player['PlayerSkin.skin']);
+    console.log(res);
+    return res;
   }
 
   /** метод для записи результатов игры в БД */
@@ -110,5 +115,5 @@ class Repository {
 }
 
 const rep = new Repository();
-rep.getFinalResultAllGames('Andrey');
+rep.getOrCreatePlayer('Pmre');
 module.exports = Repository;
