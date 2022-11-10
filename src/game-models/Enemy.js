@@ -3,13 +3,13 @@
 class Enemy {
   constructor() {
     this.generateSkin();
-    this.position = 2;
-    this.moveEveryTick = 6;
+    this.position = 10;
+    this.moveEveryTick = 5;
     this.tickCount = 0;
   }
 
   tick() {
-    this.tickCount++;
+    this.tickCount += 1;
     if (this.tickCount >= this.moveEveryTick) {
       this.moveLeft();
       this.tickCount = 0;
@@ -22,12 +22,13 @@ class Enemy {
   }
 
   moveLeft() {
-    // Идём влево.
     this.position -= 1;
   }
 
   die() {
-    this.position = '?';
+    this.generateSkin();
+    this.position = 10;
+    this.moveEveryTick = this.moveEveryTick >= 0 ? this.moveEveryTick - 1 : this.moveEveryTick;
     console.log('Enemy is dead!');
   }
 }

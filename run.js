@@ -1,6 +1,7 @@
 // Основной файл.
 // Запускает игру.
 const Game = require('./src/Game');
+const runInteractiveConsole = require('./src/keyboard');
 
 //TODO: login
 //TODO: show score and kills enemies
@@ -9,6 +10,6 @@ const Game = require('./src/Game');
 const game = new Game({
   trackLength: 30,
 });
-
+runInteractiveConsole(game);
 // Запуск игры.
 game.play();

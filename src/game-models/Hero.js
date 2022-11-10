@@ -1,7 +1,7 @@
 // Наш герой.
 
 class Hero {
-  constructor({ position }) {
+  constructor({ position = 0 } = {}) {
     this.skin = '🤠'; // можете использовать любые emoji '💃'
     this.position = position;
   }
@@ -19,15 +19,14 @@ class Hero {
   }
 
   attack() {
-    // Атакуем.
-    this.boomerang.fly();
+    this.boomerang.condition = 'Right';
   }
 
   die(interval) {
     this.skin = '💀';
     console.log('YOU ARE DEAD!💀');
-    clearInterval(interval);
-    // process.exit();
+    process.exit();
+    // clearInterval(interval);
   }
 }
 
