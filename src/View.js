@@ -6,7 +6,7 @@ class View {
   }
 
   render() {
-    const yourTeamName = 'Elbrus';
+    const yourTeamName = 'Bears';
 
     // Тут всё рисуем.
     console.clear();

@@ -13,28 +13,34 @@ class Hero {
   }
 
   moveUp() {
-    this.posY -= 1;
-    this.game.check();
+    if (this.posY > 0) {
+      this.posY -= 1;
+      this.game.check();
+    }
   }
 
   moveDown() {
-    this.posY += 1;
-    this.game.check();
+    if (this.posY < this.game.height - 1) {
+      this.posY += 1;
+      this.game.check();
+    }
   }
 
   moveLeft() {
-    // if (this.position < 0)
-    this.posX -= 1;
-    this.game.check();
+    if (this.posX > 0) {
+      this.posX -= 1;
+      this.game.check();
+    }
   }
 
   moveRight() {
-    // Идём вправо.
-    this.posX += 1;
-    this.game.check();
+    if (this.posX < this.game.width) {
+      this.posX += 1;
+      this.game.check();
+    }
   }
 
-  attack() {
+  attack(right) {
     if (this.game.boomerang.condition === 'Static') {
       this.game.boomerang.posX = this.posX;
       this.game.boomerang.posY = this.posY;

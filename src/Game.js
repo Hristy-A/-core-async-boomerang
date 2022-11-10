@@ -31,7 +31,7 @@ class Game {
   regenerateTrack() {
     // Сборка всего необходимого (герой, враг(и), оружие)
     // в единую структуру данных
-    this.track = Array.from({ length: this.height }, () => [...new Array(this.width).fill(' ')]);
+    this.track = Array.from({ length: this.height }, () => [...new Array(this.width).fill('🟥')]);
     // рисуем врагов
     this.enemyList.fillTrack(this.track);
     // рисуем бумеранг
