@@ -9,7 +9,10 @@ const {
   PlayerSkin,
 } = require('../db/models/index');
 
+const GameDTO = require('./GameDTO');
+
 class Repository {
+  /**  метод возвращает массив всех врагов */
   async getAllEnemies() {
     const allEnem = await Enemy.findAll({
       attributes: ['skin', 'base_tick', 'strong'],
@@ -18,6 +21,7 @@ class Repository {
     return allEnem.map((el) => new EnemyDTO(el.skin, el.base_tick, el.strong));
   }
 
+  /** метод возвращает данные игрока(или создает его, если нет) */
   async getOrCreatePlayer(playerName) {
     const [player, created] = await Player.findOrCreate({
       attributes: ['name'],
@@ -51,6 +55,7 @@ class Repository {
     return new PlayerDTO(player.name, player['PlayerSkin.skin']);
   }
 
+  /** метод для записи результатов игры в БД */
   async recordNewResult(namePlayer, newScore, newKilled) {
     const idPlayer = await Player.findAll({
       attributes: ['id'],
@@ -66,8 +71,29 @@ class Repository {
       player_id: idPlayer[0].id,
     });
   }
+
+  /** метод возвращающий статистику по всем играм игрока */
+  async getAllGamesOfPlayer(namePlayer) {
+    const idPlayer = await Player.findAll({
+      attributes: ['id'],
+      where: {
+        name: namePlayer,
+      },
+      raw: true,
+    });
+    const res = await Game.findAll({
+      attributes: ['score', 'enemies_killed'],
+      order: [['createdAt', 'DESC']],
+      where: {
+        player_id: idPlayer[0].id,
+      },
+      raw: true,
+    });
+    //console.log(res);
+    return res.map((el) => new GameDTO(el.score, el.enemies_killed));
+  }
 }
 
 const rep = new Repository();
-rep.recordNewResult('Andrey', 500, 20);
+rep.getAllGamesOfPlayer('Naida');
 module.exports = Repository;
