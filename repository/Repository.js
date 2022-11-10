@@ -89,11 +89,26 @@ class Repository {
       },
       raw: true,
     });
-    //console.log(res);
+    // console.log(res);
     return res.map((el) => new GameDTO(el.score, el.enemies_killed));
+  }
+
+  /** метод возвращает ИТОГ всех игр геймера */
+  async getFinalResultAllGames(namePlayer) {
+    const res = await this.getAllGamesOfPlayer(namePlayer);
+    const resAllGames = res.reduce(
+      (acc, el) => {
+        acc.score += el.score;
+        acc.enemiesKilled += el.enemiesKilled;
+        return acc;
+      },
+      { score: 0, enemiesKilled: 0 }
+    );
+    //console.log(resAllGames);
+    return resAllGames;
   }
 }
 
 const rep = new Repository();
-rep.getAllGamesOfPlayer('Naida');
+rep.getFinalResultAllGames('Andrey');
 module.exports = Repository;
