@@ -4,6 +4,16 @@ class Enemy {
   constructor() {
     this.generateSkin();
     this.position = 2;
+    this.moveEveryTick = 6;
+    this.tickCount = 0;
+  }
+
+  tick() {
+    this.tickCount++;
+    if (this.tickCount >= this.moveEveryTick) {
+      this.moveLeft();
+      this.tickCount = 0;
+    }
   }
 
   generateSkin() {

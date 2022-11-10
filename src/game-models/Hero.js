@@ -6,6 +6,8 @@ class Hero {
     this.position = position;
   }
 
+  tick() {}
+
   moveLeft() {
     // Идём влево.
     this.position -= 1;
@@ -21,10 +23,11 @@ class Hero {
     this.boomerang.fly();
   }
 
-  die() {
+  die(interval) {
     this.skin = '💀';
     console.log('YOU ARE DEAD!💀');
-    process.exit();
+    clearInterval(interval);
+    // process.exit();
   }
 }
 
