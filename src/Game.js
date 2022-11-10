@@ -15,12 +15,15 @@ class Game {
   constructor(settings, player) {
     // устанавливаем базовые настройки игры
     Object.assign(this, settings);
+    this.player = player;
 
-    console.log(settings.enemiesCount);
     this.enemyList = new EnemiesList(this, settings.enemiesCount);
     this.view = new View(this);
     this.boomerang = new Boomerang(this);
-    this.hero = new Hero(this, player);
+    this.hero = new Hero(this);
+
+    this.score = 0;
+    this.killedEnemiesCount = 0;
 
     this.regenerateTrack();
   }
@@ -62,6 +65,8 @@ class Game {
     this.check();
     this.regenerateTrack();
     this.view.render(this.track);
+
+    this.score += 0.01;
   }
 
   play() {

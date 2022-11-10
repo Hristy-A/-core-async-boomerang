@@ -39,14 +39,15 @@ class Enemy {
     this.game.check();
   }
 
-  die() {
+  die(killedByPlayer = false) {
     this.generateSkin();
     this.posX = this.game.width;
     this.posY = Math.floor(Math.random() * this.game.height);
-    if (this.moveEveryTick > this.minimalTick) {
+    if (this.moveEveryTick > this.minimalTick && killedByPlayer) {
       this.moveEveryTick -= 1;
+      this.game.killedEnemiesCount += 1;
+      this.game.score += this.game.scorePerEnemy;
     }
-    console.log('Enemy is dead!');
   }
 }
 

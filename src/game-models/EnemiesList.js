@@ -35,7 +35,7 @@ module.exports = class EnemiesList {
     let collide = false;
     this.enemies.forEach((enemy) => {
       if (enemy.posX === boomerang.posX && enemy.posY === boomerang.posY) {
-        enemy.die();
+        enemy.die(true);
         collide = true;
       }
     });
