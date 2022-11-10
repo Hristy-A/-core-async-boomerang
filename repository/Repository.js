@@ -140,6 +140,7 @@ class Repository {
     await Promise.all(operations);
     const res = resOfEachPlayer.sort((a, b) => b.score - a.score).slice(0, 3);
     // console.log(res);
+    return res;
   }
 }
 
