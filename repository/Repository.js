@@ -143,6 +143,4 @@ class Repository {
   }
 }
 
-const rep = new Repository();
-rep.getFinalResultAllGames('Artem');
 module.exports = Repository;
