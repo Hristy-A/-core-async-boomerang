@@ -12,17 +12,15 @@ const EnemiesList = require('./game-models/EnemiesList');
 // Тут будут все настройки, проверки, запуск.
 
 class Game {
-  constructor({ width, height, interval, enemiesCount }) {
+  constructor(settings, player) {
     // устанавливаем базовые настройки игры
-    this.width = width;
-    this.height = height;
-    this.interval = interval;
-    this.enemiesCount = enemiesCount;
+    Object.assign(this, settings);
 
-    this.enemyList = new EnemiesList(this, enemiesCount);
+    console.log(settings.enemiesCount);
+    this.enemyList = new EnemiesList(this, settings.enemiesCount);
     this.view = new View(this);
     this.boomerang = new Boomerang(this);
-    this.hero = new Hero(this);
+    this.hero = new Hero(this, player);
 
     this.regenerateTrack();
   }

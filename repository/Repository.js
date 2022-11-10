@@ -1,13 +1,6 @@
 const EnemyDTO = require('./EnemyDTO');
 const PlayerDTO = require('./PlayerDTO');
-const {
-  Sequelize,
-  sequelize,
-  Enemy,
-  Game,
-  Player,
-  PlayerSkin,
-} = require('../db/models/index');
+const { Sequelize, sequelize, Enemy, Game, Player, PlayerSkin } = require('../db/models/index');
 
 class Repository {
   async getAllEnemies() {
@@ -31,7 +24,7 @@ class Repository {
       },
       raw: true,
     });
-    //console.log(player, created);
+    // console.log(player, created);
     if (created) {
       await Game.create({
         score: 0,
@@ -47,9 +40,9 @@ class Repository {
         where: { name: playerName },
       });
       return new PlayerDTO(newPlayer.name, newPlayer['PlayerSkin.skin']);
-    } else {
-      return new PlayerDTO(player.name, player['PlayerSkin.skin']);
     }
+    return new PlayerDTO(player.name, player['PlayerSkin.skin']);
   }
 }
-const rep = new Repository();
+
+module.exports = Repository;
