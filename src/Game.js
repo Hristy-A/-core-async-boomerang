@@ -11,7 +11,7 @@ const View = require('./View');
 // Тут будут все настройки, проверки, запуск.
 
 class Game {
-  constructor({ trackLength = 50, tickRate = 100 }) {
+  constructor({ trackLength = 50, tickRate = 16 }) {
     this.trackLength = trackLength;
     this.tickRate = tickRate;
     // TODO: write hero, enemy and view
@@ -21,6 +21,7 @@ class Game {
     this.hero = new Hero({ game: this }); // Герою можно аргументом передать бумеранг.
     this.track = [];
     this.regenerateTrack();
+    this.testEnemy = new Enemy({ game: this });
   }
 
   regenerateTrack() {
@@ -28,10 +29,11 @@ class Game {
     // в единую структуру данных
     this.track = new Array(this.trackLength).fill(' ');
     this.track[this.enemy.position] = this.enemy.skin;
-    this.track[this.hero.position] = this.hero.skin;
     if (this.boomerang.condition !== 'Static') {
       this.track[this.boomerang.position] = this.boomerang.skin;
     }
+    this.track[this.hero.position] = this.hero.skin;
+    this.track[this.testEnemy.position] = this.testEnemy.skin;
   }
 
   check() {
@@ -39,12 +41,14 @@ class Game {
       this.hero.die(this.intervalPlay);
     }
     if (this.boomerang.position === this.enemy.position) {
-      this.boomerang.condition = 'Left';
       this.enemy.die();
+      this.boomerang.condition = 'Left';
     }
-    if (this.boomerang.position === this.hero.position + 1 && this.boomerang.condition === 'Left') {
+    if (this.boomerang.position === this.hero.position && this.boomerang.condition === 'Left') {
       this.boomerang.condition = 'Static';
+      this.boomerang.position = -1;
     }
+    this.testEnemy.position -= 1;
   }
 
   update() {

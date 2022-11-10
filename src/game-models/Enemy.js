@@ -25,6 +25,7 @@ class Enemy {
 
   moveLeft() {
     this.position -= 1;
+    this.game.check();
   }
 
   die() {

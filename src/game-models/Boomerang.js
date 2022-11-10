@@ -30,9 +30,10 @@ class Boomerang {
       this.moveLeft();
     }
     if (this.condition === 'Static') {
-      this.position = this.game.hero.position + 1;
+      this.position = null;
     }
     this.tickCount = 1;
+    this.game.check();
   }
 
   moveLeft() {

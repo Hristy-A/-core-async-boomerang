@@ -12,16 +12,20 @@ class Hero {
   }
 
   moveLeft() {
+    // if (this.position < 0)
     this.position -= 1;
+    this.game.check();
   }
 
   moveRight() {
     // Идём вправо.
     this.position += 1;
+    this.game.check();
   }
 
   attack() {
     if (this.game.boomerang.condition === 'Static') {
+      this.game.boomerang.position = this.position;
       this.game.boomerang.condition = 'Right';
     }
   }
