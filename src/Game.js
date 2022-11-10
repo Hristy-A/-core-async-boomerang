@@ -4,45 +4,72 @@
 
 const Hero = require('./game-models/Hero');
 const Enemy = require('./game-models/Enemy');
-// const Boomerang = require('./game-models/Boomerang');
+const Boomerang = require('./game-models/Boomerang');
 const View = require('./View');
+const EnemiesList = require('./game-models/EnemiesList');
 
 // Основной класс игры.
 // Тут будут все настройки, проверки, запуск.
 
 class Game {
-  constructor({ trackLength }) {
-    this.trackLength = trackLength;
-    // TODO: write hero, enemy and view
-    this.hero = new Hero(); // Герою можно аргументом передать бумеранг.
-    this.enemy = new Enemy();
-    this.view = new View();
-    this.track = [];
+  constructor({ width, height, interval, enemiesCount }) {
+    // устанавливаем базовые настройки игры
+    this.width = width;
+    this.height = height;
+    this.interval = interval;
+    this.enemiesCount = enemiesCount;
+
+    this.enemyList = new EnemiesList(this, enemiesCount);
+    this.view = new View(this);
+    this.boomerang = new Boomerang(this);
+    this.hero = new Hero(this);
+
     this.regenerateTrack();
   }
 
   regenerateTrack() {
     // Сборка всего необходимого (герой, враг(и), оружие)
     // в единую структуру данных
-    this.track = new Array(this.trackLength).fill(' ');
-    this.track[this.hero.position] = this.hero.skin;
+    this.track = Array.from({ length: this.height }, () => [...new Array(this.width).fill(' ')]);
+    // рисуем врагов
+    this.enemyList.fillTrack(this.track);
+    // рисуем бумеранг
+    if (this.boomerang.condition !== 'Static') {
+      this.track[this.boomerang.posY][this.boomerang.posX] = this.boomerang.skin;
+    }
+    // рисуем героя
+    this.track[this.hero.posY][this.hero.posX] = this.hero.skin;
   }
 
   check() {
-    if (this.hero.position === this.enemy.position) {
+    if (this.boomerang.posX - this.hero.posX >= 15) {
+      this.boomerang.condition = 'Left';
+    }
+    if (this.boomerang.posX === this.hero.posX && this.boomerang.condition === 'Left') {
+      this.boomerang.condition = 'Static';
+      this.boomerang.posX = -1;
+    }
+    if (this.enemyList.collidesWithHero(this.hero)) {
       this.hero.die(this.intervalPlay);
     }
+    if (this.enemyList.collideWithBoomerang(this.boomerang)) {
+      this.boomerang.condition = 'Left';
+    }
+    this.enemyList.killOutOfRange();
+  }
+
+  update() {
+    this.hero.tick();
+    this.enemyList.tick();
+    this.check();
+    this.regenerateTrack();
+    this.view.render(this.track);
   }
 
   play() {
     this.intervalPlay = setInterval(() => {
-      // Let's play!
-      this.hero.tick();
-      this.enemy.tick();
-      this.check();
-      this.regenerateTrack();
-      this.view.render(this.track);
-    }, 100);
+      this.update();
+    }, this.interval);
   }
 }
 

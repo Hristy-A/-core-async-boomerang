@@ -1,33 +1,54 @@
 // Наш герой.
 
 class Hero {
-  constructor({ position }) {
+  constructor(game) {
     this.skin = '🤠'; // можете использовать любые emoji '💃'
-    this.position = position;
+    this.posX = 0;
+    this.posY = 0;
+    this.game = game;
   }
 
-  tick() {}
+  tick() {
+    this.game.boomerang.tick();
+  }
+
+  moveUp() {
+    this.posY -= 1;
+    this.game.check();
+  }
+
+  moveDown() {
+    this.posY += 1;
+    this.game.check();
+  }
 
   moveLeft() {
-    // Идём влево.
-    this.position -= 1;
+    // if (this.position < 0)
+    this.posX -= 1;
+    this.game.check();
   }
 
   moveRight() {
     // Идём вправо.
-    this.position += 1;
+    this.posX += 1;
+    this.game.check();
   }
 
   attack() {
-    // Атакуем.
-    this.boomerang.fly();
+    if (this.game.boomerang.condition === 'Static') {
+      this.game.boomerang.posX = this.posX;
+      this.game.boomerang.posY = this.posY;
+      this.game.boomerang.condition = 'Right';
+    }
   }
 
   die(interval) {
     this.skin = '💀';
-    console.log('YOU ARE DEAD!💀');
     clearInterval(interval);
-    // process.exit();
+    this.game.regenerateTrack();
+    this.game.view.render(this.game.track);
+    console.log('YOU ARE DEAD!💀');
+    process.exit();
   }
 }
 
