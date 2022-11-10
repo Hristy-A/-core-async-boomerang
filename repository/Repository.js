@@ -12,7 +12,9 @@ const {
 const GameDTO = require('./GameDTO');
 
 class Repository {
-  /**  метод возвращает массив всех врагов */
+  /**  МАССИВ ВСЕХ ВРАГОВ возвращает массив всех врагов - массив экземпляров EnemyDTO - со
+   * свойствами skin, tick, strong
+   * ничего не принимает*/
   async getAllEnemies() {
     const allEnem = await Enemy.findAll({
       attributes: ['skin', 'base_tick', 'strong'],
@@ -21,7 +23,9 @@ class Repository {
     return allEnem.map((el) => new EnemyDTO(el.skin, el.base_tick, el.strong));
   }
 
-  /** метод возвращает данные игрока(или создает его, если нет) */
+  /** ДАННЫЕ ИГРОКА возвращает данные игрока(или создает его, если нет) - экземпляр
+   * класса PlayerDTO со свойствами name, skin
+   * принимает имя игрока*/
   async getOrCreatePlayer(playerName) {
     const [player, created] = await Player.findOrCreate({
       attributes: ['name'],
@@ -56,11 +60,13 @@ class Repository {
     } else {
       res = new PlayerDTO(player.name, player['PlayerSkin.skin']);
     }
-    console.log(res);
+    //console.log(res);
     return res;
   }
 
-  /** метод для записи результатов игры в БД */
+  /**ЗАПИСЬ В БАЗУ РЕЗ ТЕКУЩЕЙ ИГРЫ для записи результатов игры в БД
+   * принимает name, score, enemiesKilled
+   */
   async recordNewResult(namePlayer, newScore, newKilled) {
     const idPlayer = await Player.findAll({
       attributes: ['id'],
@@ -77,7 +83,10 @@ class Repository {
     });
   }
 
-  /** метод возвращающий статистику по всем играм игрока */
+  /** РЕЗУЛЬТАТЫ КАЖДОЙ ИГРЫ ИГРОКА возвращающий статистику по всем играм игрока
+   * возвращает массив с экземплярами GameDTO со свойства score, enemiesKilled
+   * принимает namePlayer
+   */
   async getAllGamesOfPlayer(namePlayer) {
     const idPlayer = await Player.findAll({
       attributes: ['id'],
@@ -98,7 +107,8 @@ class Repository {
     return res.map((el) => new GameDTO(el.score, el.enemies_killed));
   }
 
-  /** метод возвращает ИТОГ всех игр геймера */
+  /** РЕЗУЛЬТАТ ВСЕХ ИГР ИГРОКА возвращает ИТОГ всех игр геймера  возвращает
+   * объект со свойствами score, enemiesKilled */
   async getFinalResultAllGames(namePlayer) {
     const res = await this.getAllGamesOfPlayer(namePlayer);
     const resAllGames = res.reduce(
@@ -112,8 +122,27 @@ class Repository {
     //console.log(resAllGames);
     return resAllGames;
   }
+
+  /** ЛИДЕР БОРДА возвращает 3-x лидеров игр по очкам - массив из 3 объектов
+   * со свойствами - score, enemiesKilled, name */
+  async getLiderBoards() {
+    const allPlayers = await Player.findAll({
+      attributes: ['name'],
+      raw: true,
+    });
+
+    const resOfEachPlayer = [];
+    const operations = allPlayers.map(async (el) => {
+      const res = await this.getFinalResultAllGames(el.name);
+      res.name = el.name;
+      resOfEachPlayer.push(res);
+    });
+    await Promise.all(operations);
+    const res = resOfEachPlayer.sort((a, b) => b.score - a.score).slice(0, 3);
+    // console.log(res);
+  }
 }
 
 const rep = new Repository();
-rep.getOrCreatePlayer('Pmre');
+rep.getFinalResultAllGames('Artem');
 module.exports = Repository;
