@@ -17,9 +17,9 @@ class Game {
     // TODO: write hero, enemy and view
     this.enemy = new Enemy({ game: this });
 
-    // for (let i = 0; i < 8; i += 1) {
-      this.enemy = new Enemy({ game: this });
-    // }
+    for (let i = 0; i < 8; i += 1) {
+      this.enemy[i] = new Enemy({ game: this, posUD: i });
+    }
 
     this.view = new View(this);
     this.boomerang = new Boomerang({ game: this });
@@ -39,18 +39,9 @@ class Game {
       [...new Array(this.trackLength).fill(' ')],
       [...new Array(this.trackLength).fill(' ')],
       [...new Array(this.trackLength).fill(' ')]];
-    this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
-    // this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
-    // this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
-    // this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
-    // this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
-    // this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
-    // this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
-    // this.track[this.enemy.posUD][this.enemy.position] = this.enemy.skin;
-    
-    
-    
-    
+    for (let i = 0; i < 8; i += 1) {
+      this.track[this.enemy[i].posUD][this.enemy[i].position] = this.enemy[i].skin;
+    }
     if (this.boomerang.condition !== 'Static') {
       this.track[this.boomerang.posUD][this.boomerang.position] = this.boomerang.skin;
     }
@@ -58,28 +49,32 @@ class Game {
   }
 
   check() {
-    if (this.hero.position === this.enemy.position && this.hero.posUD === this.enemy.posUD) {
-      this.hero.die(this.intervalPlay);
-    }
-    if (this.boomerang.position === this.enemy.position && this.boomerang.posUD === this.enemy.posUD) {
-      this.enemy.die();
-      this.boomerang.condition = 'Left';
-    }
-    if (this.boomerang.position === this.hero.position && this.boomerang.condition === 'Left') {
-      this.boomerang.condition = 'Static';
-      this.boomerang.position = -1;
-    }
-    if (this.boomerang.position - this.hero.position >= 10) {
-      this.boomerang.condition = 'Left';
-    }
-    if (this.enemy.position <= 0) {
-      this.enemy.die();
+    for (let i = 0; i < 8; i += 1) {
+      if (this.hero.position === this.enemy[i].position && this.hero.posUD === this.enemy[i].posUD) {
+        this.hero.die(this.intervalPlay);
+      }
+      if (this.boomerang.position === this.enemy[i].position && this.boomerang.posUD === this.enemy[i].posUD) {
+        this.enemy[i].die();
+        this.boomerang.condition = 'Left';
+      }
+      if (this.boomerang.position === this.hero.position && this.boomerang.condition === 'Left') {
+        this.boomerang.condition = 'Static';
+        this.boomerang.position = -1;
+      }
+      if (this.boomerang.position - this.hero.position >= 10) {
+        this.boomerang.condition = 'Left';
+      }
+      if (this.enemy[i].position <= 0) {
+        this.enemy[i].die();
+      }
     }
   }
 
   update() {
     this.hero.tick();
-    this.enemy.tick();
+    for (let i = 0; i < 8; i += 1) {
+      this.enemy[i].tick();
+    }
     this.check();
     this.regenerateTrack();
     this.view.render(this.track);

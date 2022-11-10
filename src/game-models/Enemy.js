@@ -1,14 +1,14 @@
 // Враг.
 
 class Enemy {
-  constructor({ game }) {
+  constructor({ game, posUD }) {
     this.game = game;
     this.generateSkin();
     this.position = game.trackLength;
     this.moveEveryTick = 20;
     this.minimalTick = 5;
     this.tickCount = 0;
-    this.posUD = 0;
+    this.posUD = posUD;
   }
 
   tick() {
