@@ -3,5 +3,6 @@
   "height": 8,
   "interval": 25,
   "enemiesCount": 15,
-  "scorePerEnemy": 5
+  "scorePerEnemy": 5,
+  "baseHealth": 5
 }

@@ -1,11 +1,10 @@
-// Наш герой.
-
 class Hero {
   constructor(game) {
-    this.skin = game.player.skin; // можете использовать любые emoji '💃'
+    this.skin = game.player.skin;
     this.posX = 0;
     this.posY = 0;
     this.game = game;
+    this.health = game.baseHealth;
   }
 
   tick() {
@@ -48,7 +47,14 @@ class Hero {
     }
   }
 
-  die(interval) {
+  hit(interval) {
+    this.health -= 1;
+
+    if (this.health > 0) {
+      this.game.destroyEntryEnemy();
+      return;
+    }
+
     this.skin = '💀';
     clearInterval(interval);
     this.game.regenerateTrack();

@@ -2,7 +2,7 @@
   "name": "core-async-boomerang",
   "version": "1.0.0",
   "description": "Настало время разрабатывать лучшие в мире игры!",
-  "main": "run.js",
+  "main": "runDebug.js",
   "dependencies": {
     "find-exec": "^1.0.2",
     "keypress": "^0.2.1",

@@ -1,4 +1,5 @@
-// Враг.
+/* eslint-disable consistent-return */
+const random = require('../random');
 
 class Enemy {
   constructor(game, posX, posY) {
@@ -46,6 +47,8 @@ class Enemy {
     if (this.moveEveryTick > this.minimalTick && killedByPlayer) {
       this.moveEveryTick -= 1;
       this.game.killedEnemiesCount += 1;
+      if (this.skin === '🐸') this.game.score += this.game.scorePerEnemy * 1.5;
+      if (this.skin === '🕷') this.game.score += this.game.scorePerEnemy * 1.3;
       this.game.score += this.game.scorePerEnemy;
     }
   }
