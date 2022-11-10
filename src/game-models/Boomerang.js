@@ -3,14 +3,26 @@
 // Тогда можно будет создать класс Weapon и воспользоваться наследованием!
 
 class Boomerang {
-  constructor() {
+  constructor({ game } = {}) {
     this.skin = '🌀';
-    this.position = 1;
+    // this.position = 0;
     this.condition = 'Static';
+    this.game = game;
     // this.posUD = 0;
+    this.moveEveryTick = 2;
+    this.tickCount = 1;
+  }
+
+  tick() {
+    this.fly();
   }
 
   fly() {
+    if (this.tickCount !== this.moveEveryTick) {
+      this.tickCount += 1;
+      return;
+    }
+
     if (this.condition === 'Right') {
       this.moveRight();
     }
@@ -18,8 +30,9 @@ class Boomerang {
       this.moveLeft();
     }
     if (this.condition === 'Static') {
-      this.boomerang.position = this.hero.position + 1;
+      this.position = this.game.hero.position + 1;
     }
+    this.tickCount = 1;
   }
 
   moveLeft() {

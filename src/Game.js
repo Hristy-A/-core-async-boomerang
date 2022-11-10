@@ -11,13 +11,14 @@ const View = require('./View');
 // Тут будут все настройки, проверки, запуск.
 
 class Game {
-  constructor({ trackLength }) {
+  constructor({ trackLength = 50, tickRate = 100 }) {
     this.trackLength = trackLength;
+    this.tickRate = tickRate;
     // TODO: write hero, enemy and view
-    this.hero = new Hero(); // Герою можно аргументом передать бумеранг.
-    this.enemy = new Enemy();
+    this.enemy = new Enemy({ game: this });
     this.view = new View(this);
-    this.boomerang = new Boomerang();
+    this.boomerang = new Boomerang({ game: this });
+    this.hero = new Hero({ game: this }); // Герою можно аргументом передать бумеранг.
     this.track = [];
     this.regenerateTrack();
   }
@@ -26,9 +27,11 @@ class Game {
     // Сборка всего необходимого (герой, враг(и), оружие)
     // в единую структуру данных
     this.track = new Array(this.trackLength).fill(' ');
-    this.track[this.hero.position] = this.hero.skin;
     this.track[this.enemy.position] = this.enemy.skin;
-    this.track[this.boomerang.position] = this.boomerang.skin;
+    this.track[this.hero.position] = this.hero.skin;
+    if (this.boomerang.condition !== 'Static') {
+      this.track[this.boomerang.position] = this.boomerang.skin;
+    }
   }
 
   check() {
@@ -36,19 +39,26 @@ class Game {
       this.hero.die(this.intervalPlay);
     }
     if (this.boomerang.position === this.enemy.position) {
+      this.boomerang.condition = 'Left';
       this.enemy.die();
     }
+    if (this.boomerang.position === this.hero.position + 1 && this.boomerang.condition === 'Left') {
+      this.boomerang.condition = 'Static';
+    }
+  }
+
+  update() {
+    this.hero.tick();
+    this.enemy.tick();
+    this.check();
+    this.regenerateTrack();
+    this.view.render(this.track);
   }
 
   play() {
     this.intervalPlay = setInterval(() => {
-      // Let's play!
-      this.check();
-      this.hero.tick();
-      this.enemy.tick();
-      this.regenerateTrack();
-      this.view.render(this.track);
-    }, 100);
+      this.update();
+    }, this.tickRate);
   }
 }
 

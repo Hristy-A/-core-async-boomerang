@@ -1,10 +1,12 @@
 // Враг.
 
 class Enemy {
-  constructor() {
+  constructor({ game }) {
+    this.game = game;
     this.generateSkin();
-    this.position = 10;
+    this.position = game.trackLength;
     this.moveEveryTick = 5;
+    this.minimalTick = 2;
     this.tickCount = 0;
   }
 
@@ -27,8 +29,11 @@ class Enemy {
 
   die() {
     this.generateSkin();
-    this.position = 10;
-    this.moveEveryTick = this.moveEveryTick >= 0 ? this.moveEveryTick - 1 : this.moveEveryTick;
+    this.position = this.game.trackLength;
+    if (this.moveEveryTick > this.minimalTick) {
+      this.moveEveryTick -= 1;
+    }
+    // this.moveEveryTick = this.moveEveryTick > 1 ? this.moveEveryTick - 1 : this.moveEveryTick;
     console.log('Enemy is dead!');
   }
 }
