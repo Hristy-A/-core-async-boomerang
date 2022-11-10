@@ -6,75 +6,61 @@ const Hero = require('./game-models/Hero');
 const Enemy = require('./game-models/Enemy');
 const Boomerang = require('./game-models/Boomerang');
 const View = require('./View');
+const EnemiesList = require('./game-models/EnemiesList');
 
 // Основной класс игры.
 // Тут будут все настройки, проверки, запуск.
 
 class Game {
-  constructor({ trackLength = 50, tickRate = 16 }) {
-    this.trackLength = trackLength;
-    this.tickRate = tickRate;
-    // TODO: write hero, enemy and view
-    this.enemy = new Enemy({ game: this });
+  constructor({ width, height, interval, enemiesCount }) {
+    // устанавливаем базовые настройки игры
+    this.width = width;
+    this.height = height;
+    this.interval = interval;
+    this.enemiesCount = enemiesCount;
 
-    for (let i = 0; i < 8; i += 1) {
-      this.enemy[i] = new Enemy({ game: this, posUD: i });
-    }
-
+    this.enemyList = new EnemiesList(this, enemiesCount);
     this.view = new View(this);
-    this.boomerang = new Boomerang({ game: this });
-    this.hero = new Hero({ game: this }); // Герою можно аргументом передать бумеранг.
-    this.track = [];
+    this.boomerang = new Boomerang(this);
+    this.hero = new Hero(this);
+
     this.regenerateTrack();
   }
 
   regenerateTrack() {
     // Сборка всего необходимого (герой, враг(и), оружие)
     // в единую структуру данных
-    this.track = [[...new Array(this.trackLength).fill(' ')],
-      [...new Array(this.trackLength).fill(' ')],
-      [...new Array(this.trackLength).fill(' ')],
-      [...new Array(this.trackLength).fill(' ')],
-      [...new Array(this.trackLength).fill(' ')],
-      [...new Array(this.trackLength).fill(' ')],
-      [...new Array(this.trackLength).fill(' ')],
-      [...new Array(this.trackLength).fill(' ')]];
-    for (let i = 0; i < 8; i += 1) {
-      this.track[this.enemy[i].posUD][this.enemy[i].position] = this.enemy[i].skin;
-    }
+    this.track = Array.from({ length: this.height }, () => [...new Array(this.width).fill(' ')]);
+    // рисуем врагов
+    this.enemyList.fillTrack(this.track);
+    // рисуем бумеранг
     if (this.boomerang.condition !== 'Static') {
-      this.track[this.boomerang.posUD][this.boomerang.position] = this.boomerang.skin;
+      this.track[this.boomerang.posY][this.boomerang.posX] = this.boomerang.skin;
     }
-    this.track[this.hero.posUD][this.hero.position] = this.hero.skin;
+    // рисуем героя
+    this.track[this.hero.posY][this.hero.posX] = this.hero.skin;
   }
 
   check() {
-    for (let i = 0; i < 8; i += 1) {
-      if (this.hero.position === this.enemy[i].position && this.hero.posUD === this.enemy[i].posUD) {
-        this.hero.die(this.intervalPlay);
-      }
-      if (this.boomerang.position === this.enemy[i].position && this.boomerang.posUD === this.enemy[i].posUD) {
-        this.enemy[i].die();
-        this.boomerang.condition = 'Left';
-      }
-      if (this.boomerang.position === this.hero.position && this.boomerang.condition === 'Left') {
-        this.boomerang.condition = 'Static';
-        this.boomerang.position = -1;
-      }
-      if (this.boomerang.position - this.hero.position >= 10) {
-        this.boomerang.condition = 'Left';
-      }
-      if (this.enemy[i].position <= 0) {
-        this.enemy[i].die();
-      }
+    if (this.boomerang.posX - this.hero.posX >= 15) {
+      this.boomerang.condition = 'Left';
     }
+    if (this.boomerang.posX === this.hero.posX && this.boomerang.condition === 'Left') {
+      this.boomerang.condition = 'Static';
+      this.boomerang.posX = -1;
+    }
+    if (this.enemyList.collidesWithHero(this.hero)) {
+      this.hero.die(this.intervalPlay);
+    }
+    if (this.enemyList.collideWithBoomerang(this.boomerang)) {
+      this.boomerang.condition = 'Left';
+    }
+    this.enemyList.killOutOfRange();
   }
 
   update() {
     this.hero.tick();
-    for (let i = 0; i < 8; i += 1) {
-      this.enemy[i].tick();
-    }
+    this.enemyList.tick();
     this.check();
     this.regenerateTrack();
     this.view.render(this.track);
@@ -83,7 +69,7 @@ class Game {
   play() {
     this.intervalPlay = setInterval(() => {
       this.update();
-    }, this.tickRate);
+    }, this.interval);
   }
 }
 

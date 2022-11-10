@@ -1,14 +1,14 @@
 // Враг.
 
 class Enemy {
-  constructor({ game, posUD }) {
+  constructor(game, posX, posY) {
     this.game = game;
     this.generateSkin();
-    this.position = game.trackLength;
     this.moveEveryTick = 20;
     this.minimalTick = 5;
     this.tickCount = 0;
-    this.posUD = posUD;
+    this.posY = posY;
+    this.posX = posX;
   }
 
   tick() {
@@ -25,24 +25,24 @@ class Enemy {
   }
 
   moveLeft() {
-    this.position -= 1;
+    this.posX -= 1;
     this.game.check();
   }
 
   moveUp() {
-    this.posUD -= 1;
+    this.posY -= 1;
     this.game.check();
   }
 
   moveDown() {
-    this.posUD += 1;
+    this.posY += 1;
     this.game.check();
   }
 
   die() {
     this.generateSkin();
-    this.position = this.game.trackLength;
-    this.posUD = Math.floor(Math.random() * 8);
+    this.posX = this.game.width;
+    this.posY = Math.floor(Math.random() * this.game.height);
     if (this.moveEveryTick > this.minimalTick) {
       this.moveEveryTick -= 1;
     }

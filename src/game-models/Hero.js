@@ -1,10 +1,10 @@
 // Наш герой.
 
 class Hero {
-  constructor({ game, position = 0 } = {}) {
+  constructor(game) {
     this.skin = '🤠'; // можете использовать любые emoji '💃'
-    this.position = position;
-    this.posUD = 0;
+    this.posX = 0;
+    this.posY = 0;
     this.game = game;
   }
 
@@ -13,31 +13,31 @@ class Hero {
   }
 
   moveUp() {
-    this.posUD -= 1;
+    this.posY -= 1;
     this.game.check();
   }
 
   moveDown() {
-    this.posUD += 1;
+    this.posY += 1;
     this.game.check();
   }
 
   moveLeft() {
     // if (this.position < 0)
-    this.position -= 1;
+    this.posX -= 1;
     this.game.check();
   }
 
   moveRight() {
     // Идём вправо.
-    this.position += 1;
+    this.posX += 1;
     this.game.check();
   }
 
   attack() {
     if (this.game.boomerang.condition === 'Static') {
-      this.game.boomerang.position = this.position;
-      this.game.boomerang.posUD = this.posUD;
+      this.game.boomerang.posX = this.posX;
+      this.game.boomerang.posY = this.posY;
       this.game.boomerang.condition = 'Right';
     }
   }
