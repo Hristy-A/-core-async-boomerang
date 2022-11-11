@@ -61,7 +61,7 @@ async function startGame(player) {
         await startGame(player);
         break;
       case 1:
-        await controller.showStatistics(player);
+        await controller.showStatistics(repository, player);
         break;
       case 2:
         player = await selectPlayer();

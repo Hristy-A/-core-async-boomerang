@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
@@ -87,6 +88,11 @@ module.exports = class Controller {
           }
         }
 
+        if (this.mode === this.SHOWINFO) {
+          this.resolver();
+          this.mode = this.NOTHING;
+        }
+
         if (key.ctrl && key.name === 'c') {
           this.terminate();
         }
@@ -161,6 +167,44 @@ module.exports = class Controller {
     this.typed = '';
     this.msg = msg;
     this.mode = this.TYPEMODE;
+    return new Promise((res, rej) => {
+      this.resolver = res;
+    });
+  }
+
+  async showStatistics(repository, player) {
+    this.mode = this.SHOWINFO;
+
+    console.clear();
+
+    const totalResultsPlayer = await repository.getFinalResultAllGames(player.name);
+    const playerInfo =
+      c.bold.yellow.underline('🪪  Your results:\n\n') +
+      c.bold.yellow(player.name) +
+      ' has score: ' +
+      c.bold.green(totalResultsPlayer.score) +
+      ' enemy killed: ' +
+      c.bold.red(totalResultsPlayer.enemiesKilled);
+
+    const prefix = ['🪩  ', '🥈 ', '🥉 '];
+
+    const otherTotalResults = await repository.getLiderBoards();
+    const liderBord = `${c.bold.underline.yellow('Top 3 players:\n\n')}${otherTotalResults
+      .map(
+        (res, i) =>
+          prefix[i] +
+          c.bold.yellow(res.name) +
+          ' has score: ' +
+          c.bold.green(res.score) +
+          ' enemy killed: ' +
+          c.bold.red(res.enemiesKilled),
+      )
+      .join('\n')}`;
+
+    console.log(playerInfo);
+    console.log('\n');
+    console.log(liderBord);
+
     return new Promise((res, rej) => {
       this.resolver = res;
     });
