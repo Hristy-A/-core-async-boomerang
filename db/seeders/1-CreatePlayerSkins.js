@@ -10,19 +10,19 @@ module.exports = {
           skin: '🤠',
         },
         {
-          skin: '🦸',
+          skin: '💃',
         },
         {
           skin: '🎅',
         },
         {
-          skin: '🥸',
+          skin: '🕴',
         },
         {
-          skin: '🥰',
+          skin: '🧚',
         },
         {
-          skin: '🥷',
+          skin: '👮‍♀️',
         },
         {
           skin: '🕺',
@@ -31,10 +31,10 @@ module.exports = {
           skin: '🧝',
         },
         {
-          skin: '🧙',
+          skin: '🥷',
         },
         {
-          skin: '👼',
+          skin: '🦸',
         },
         {
           skin: '🧞',
