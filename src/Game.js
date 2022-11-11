@@ -89,6 +89,8 @@ class Game {
   }
 
   play() {
+    this.audio.instance.stopAll();
+    this.audio.instance.playInfinity(this.audio.PLAYING);
     this.intervalPlay = setInterval(() => {
       this.update();
     }, this.interval);

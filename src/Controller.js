@@ -6,12 +6,14 @@ const keypress = require('keypress');
 const c = require('ansi-colors');
 
 module.exports = class Controller {
-  constructor() {
+  constructor(audio) {
     this.TYPEMODE = 'typemode';
     this.PLAYMODE = 'playmode';
     this.MENUMODE = 'menumode';
     this.SHOWINFO = 'showinfo';
     this.NOTHING = 'nothing';
+
+    this.audio = audio;
 
     this.mode = this.MENUMODE;
 
@@ -221,6 +223,7 @@ module.exports = class Controller {
   }
 
   terminate() {
+    this.audio.instance.stopAll();
     process.exit();
   }
 };

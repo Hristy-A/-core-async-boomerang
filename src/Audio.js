@@ -10,6 +10,7 @@ module.exports = class Audio {
   }
 
   static MAINMENU = 'mainMenu';
+  static PLAYING = 'playing';
 
   constructor() {
     this.player = player;
@@ -17,7 +18,11 @@ module.exports = class Audio {
     this.tracksInfo = {
       mainMenu: {
         duration: 46e3,
-        path: './main-menu.wav',
+        path: './src/sounds/main-menu.wav',
+      },
+      playing: {
+        duration: 105e3,
+        path: './src/sounds/playing.wav',
       },
     };
 

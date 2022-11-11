@@ -21,7 +21,7 @@ function delay(ms) {
 }
 
 const repository = new Repository();
-const controller = new Controller();
+const controller = new Controller(Audio);
 const settings = calcSettings(gameSettings);
 
 async function selectPlayer() {
@@ -43,9 +43,11 @@ async function startGame(player) {
     Math.round(gameResults.score),
     gameResults.enemykilled,
   );
+  Audio.instance.stopAll();
 }
 
 (async () => {
+  Audio.instance.playInfinity(Audio.MAINMENU);
   console.clear();
   const helloMessage = c.bold.yellow('\n\n\t\t\tWelcome to the mega game!!!');
   console.log(helloMessage);
