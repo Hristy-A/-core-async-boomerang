@@ -1,11 +1,10 @@
-// Наш герой.
-
 class Hero {
   constructor(game) {
-    this.skin = game.player.skin; // можете использовать любые emoji '💃'
+    this.skin = game.player.skin;
     this.posX = 0;
     this.posY = 0;
     this.game = game;
+    this.health = game.baseHealth;
   }
 
   tick() {
@@ -13,28 +12,34 @@ class Hero {
   }
 
   moveUp() {
-    this.posY -= 1;
-    this.game.check();
+    if (this.posY > 0) {
+      this.posY -= 1;
+      this.game.check();
+    }
   }
 
   moveDown() {
-    this.posY += 1;
-    this.game.check();
+    if (this.posY < this.game.height - 1) {
+      this.posY += 1;
+      this.game.check();
+    }
   }
 
   moveLeft() {
-    // if (this.position < 0)
-    this.posX -= 1;
-    this.game.check();
+    if (this.posX > 0) {
+      this.posX -= 1;
+      this.game.check();
+    }
   }
 
   moveRight() {
-    // Идём вправо.
-    this.posX += 1;
-    this.game.check();
+    if (this.posX < this.game.width) {
+      this.posX += 1;
+      this.game.check();
+    }
   }
 
-  attack() {
+  attack(right) {
     if (this.game.boomerang.condition === 'Static') {
       this.game.boomerang.posX = this.posX;
       this.game.boomerang.posY = this.posY;
@@ -42,7 +47,14 @@ class Hero {
     }
   }
 
-  die(interval) {
+  hit(interval) {
+    this.health -= 1;
+
+    if (this.health > 0) {
+      this.game.destroyEntryEnemy();
+      return;
+    }
+
     this.skin = '💀';
     clearInterval(interval);
     this.game.regenerateTrack();

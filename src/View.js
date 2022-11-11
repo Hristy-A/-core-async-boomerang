@@ -6,10 +6,22 @@ class View {
   }
 
   render() {
-    const yourTeamName = 'Elbrus';
+    const yourTeamName = 'Bears';
 
     // Тут всё рисуем.
+    let statusBar = `HP: ${[
+      ...'💗'
+        .repeat(this.game.hero.health)
+        .concat([...'🖤'.repeat(this.game.baseHealth - this.game.hero.health)].join('')),
+    ].join(' ')}`;
+    statusBar = statusBar.padStart(
+      Math.floor(this.game.width - statusBar.length + statusBar.length),
+      '  ',
+    );
+    statusBar = statusBar.padEnd(this.game.width, '  ').concat('\n');
+
     console.clear();
+    console.log(statusBar);
     console.log(this.game.track.map((row) => row.join('')).join('\n'));
     console.log('\n\n');
     console.log(`Playing: ${this.game.player.name}`);

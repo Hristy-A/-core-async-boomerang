@@ -3,7 +3,6 @@
 // а передавать все нужные объекты прямо из run.js при инициализации new Game().
 
 const Hero = require('./game-models/Hero');
-const Enemy = require('./game-models/Enemy');
 const Boomerang = require('./game-models/Boomerang');
 const View = require('./View');
 const EnemiesList = require('./game-models/EnemiesList');
@@ -28,10 +27,14 @@ class Game {
     this.regenerateTrack();
   }
 
+  destroyEntryEnemy() {
+    this.enemyList.kill(this.hero.posX, this.hero.posY);
+  }
+
   regenerateTrack() {
     // Сборка всего необходимого (герой, враг(и), оружие)
     // в единую структуру данных
-    this.track = Array.from({ length: this.height }, () => [...new Array(this.width).fill(' ')]);
+    this.track = Array.from({ length: this.height }, () => [...new Array(this.width).fill('  ')]);
     // рисуем врагов
     this.enemyList.fillTrack(this.track);
     // рисуем бумеранг
@@ -51,7 +54,7 @@ class Game {
       this.boomerang.posX = -1;
     }
     if (this.enemyList.collidesWithHero(this.hero)) {
-      this.hero.die(this.intervalPlay);
+      this.hero.hit(this.intervalPlay);
     }
     if (this.enemyList.collideWithBoomerang(this.boomerang)) {
       this.boomerang.condition = 'Left';
@@ -66,7 +69,7 @@ class Game {
     this.regenerateTrack();
     this.view.render(this.track);
 
-    this.score += 0.01;
+    this.score += 0.02;
   }
 
   play() {
