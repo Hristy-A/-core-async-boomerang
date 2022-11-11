@@ -21,7 +21,7 @@ class Enemy {
   }
 
   generateSkin() {
-    const skins = ['👾', '💀', '👹', '👻', '👽', '👿', '💩', '🤡', '🤺', '🧛', '🧟', '🎃'];
+    const skins = ['👾', '💀', '👹', '👻', '👽', '👿', '💩', '🤡', '🧛', '🧟', '🎃'];
     this.skin = skins[Math.floor(Math.random() * skins.length)];
   }
 
@@ -49,6 +49,7 @@ class Enemy {
       this.game.killedEnemiesCount += 1;
       if (this.skin === '🐸') this.game.score += this.game.scorePerEnemy * 1.5;
       if (this.skin === '🕷') this.game.score += this.game.scorePerEnemy * 1.3;
+      if (this.skin === '🦣') this.game.score += this.game.scorePerEnemy * 2.0;
       this.game.score += this.game.scorePerEnemy;
     }
   }

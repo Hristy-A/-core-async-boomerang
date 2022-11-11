@@ -23,7 +23,7 @@ module.exports = class EnemiesList {
   createEnemy() {
     const posx = random(this.game.width, Math.floor(this.game.width / 4));
     const posy = random(this.game.height);
-    const seed = random(15);
+    const seed = random(18);
 
     if (seed >= 12) return new SpiderEnemy(this.game, posx, posy);
     if (seed > 9) return new ShieldEnemy(this.game, posx, posy);

@@ -12,6 +12,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING(4),
       },
+      boomerang: {
+        allowNull: false,
+        type: Sequelize.STRING(4),
+      },
       createdAt: {
         defaultValue: Sequelize.fn('now'),
         allowNull: false,

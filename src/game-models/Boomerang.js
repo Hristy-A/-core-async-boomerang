@@ -1,13 +1,21 @@
 class Boomerang {
   constructor(game) {
-    this.skin = '🌀';
+    this.skin = game.player.boomerang;
     this.condition = 'Static';
     this.game = game;
     this.moveEveryTick = 2;
     this.tickCount = 1;
-
     this.posX = 0;
     this.posY = 0;
+    this.direction = true;
+  }
+
+  reverse() {
+    if (this.condition === 'Left') {
+      this.condition = 'Right';
+      return;
+    }
+    if (this.condition === 'Right') this.condition = 'Left';
   }
 
   tick() {
@@ -27,7 +35,7 @@ class Boomerang {
       this.moveLeft();
     }
     if (this.condition === 'Static') {
-      this.posX = null;
+      this.posX = this.game.hero.posX;
     }
     this.tickCount = 1;
     this.game.check();

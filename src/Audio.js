@@ -1,6 +1,8 @@
+const { enabled } = require('ansi-colors');
+
 var player = require('play-sound')((opts = {}));
 /* eslint-disable no-undef */
-class Audio {
+module.exports = class Audio {
   static _instance = null;
 
   static get instance() {
@@ -9,7 +11,10 @@ class Audio {
     return this._instance;
   }
 
+  static disabled = false;
+
   static MAINMENU = 'mainMenu';
+  static PLAYING = 'playing';
 
   constructor() {
     this.player = player;
@@ -17,7 +22,11 @@ class Audio {
     this.tracksInfo = {
       mainMenu: {
         duration: 46e3,
-        path: './main-menu.wav',
+        path: './src/sounds/main-menu.wav',
+      },
+      playing: {
+        duration: 105e3,
+        path: './src/sounds/playing.wav',
       },
     };
 
@@ -31,6 +40,7 @@ class Audio {
   }
 
   _play(track, canceller = null) {
+    if (Audio.disabled) return;
     const hash = track + Math.random() * Math.random();
     const tracker = this.player.play(this.tracksInfo[track].path);
     if (canceller !== null && this.currentPlaying.some((playing) => playing.includes(canceller)))
@@ -64,12 +74,12 @@ class Audio {
     const canceller = setInterval(() => this._play(track), this.tracksInfo[track].duration);
     this._play(track, canceller);
   }
-}
+};
 
-console.log(Audio.instance);
+// console.log(Audio.instance);
 
-Audio.instance.playInfinity(Audio.MAINMENU);
+// Audio.instance.playInfinity(Audio.MAINMENU);
 
-setTimeout(() => {
-  Audio.instance.stopPlaying(Audio.MAINMENU);
-}, 10000);
+// setTimeout(() => {
+//   Audio.instance.stopPlaying(Audio.MAINMENU);
+// }, 10000);
