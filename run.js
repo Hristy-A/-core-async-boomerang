@@ -28,7 +28,15 @@ async function selectPlayer() {
   console.clear();
   const msg = c.bold.green('\tEnter you nickname:\n\t');
   const userNickName = await controller.getInput(msg, c.bold.yellow);
-  return repository.getOrCreatePlayer(userNickName);
+  try {
+    return await repository.getOrCreatePlayer(userNickName);
+  } catch {
+    console.log(
+      c.red.bold('Database not initialized. ') + 'Type: ' + c.green.underline('npm run db-up'),
+    );
+    Audio.instance.stopAll();
+    process.exit();
+  }
 }
 
 async function startGame(player) {
@@ -44,6 +52,7 @@ async function startGame(player) {
     gameResults.enemykilled,
   );
   Audio.instance.stopAll();
+  Audio.instance.playInfinity(Audio.MAINMENU);
 }
 
 (async () => {

@@ -19,7 +19,8 @@
     "sequelize-cli": "^6.5.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db-up": "npx sequelize db:create; npx sequelize db:migrate; npx sequelize db:seed:all;"
   },
   "repository": {
     "type": "git",

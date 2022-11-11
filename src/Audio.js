@@ -66,6 +66,7 @@ module.exports = class Audio {
   stopAll() {
     this.currentPlaying.forEach((playing) => {
       playing.tracker.kill();
+      if (playing.canceller) clearInterval(playing.canceller);
     });
     this.currentPlaying = [];
   }
