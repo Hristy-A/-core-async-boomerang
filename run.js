@@ -30,12 +30,13 @@ async function selectPlayer() {
   return repository.getOrCreatePlayer(userNickName);
 }
 
-function startGame(player) {
+async function startGame(player) {
   controller.startGame();
   const game = new Game(Object.assign(settings, { audio: Audio }), player);
   controller.changeGame(game);
-  return game.play();
+  const gameResults = await game.play();
   controller.endGame();
+  await repository.recordNewResult(gameResults.name, gameResults.score, gameResults.enemykilled);
 }
 
 (async () => {

@@ -63,7 +63,12 @@ class Hero {
     this.game.regenerateTrack();
     this.game.view.render(this.game.track);
     console.log('YOU ARE DEAD!💀');
-    process.exit();
+
+    this.game.resolver({
+      name: this.game.player.name,
+      score: this.game.score,
+      enemykilled: this.game.killedEnemiesCount,
+    });
   }
 }
 

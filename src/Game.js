@@ -49,11 +49,19 @@ class Game {
     if (Math.abs(this.boomerang.posX - this.hero.posX) >= 15) {
       this.boomerang.reverse();
     }
-    if (this.boomerang.posX === this.hero.posX && this.boomerang.condition === 'Left' && this.boomerang.direction === false) {
+    if (
+      this.boomerang.posX === this.hero.posX &&
+      this.boomerang.condition === 'Left' &&
+      this.boomerang.direction === false
+    ) {
       this.boomerang.condition = 'Static';
       this.boomerang.posX = this.hero.posX;
     }
-    if (this.boomerang.posX === this.hero.posX && this.boomerang.condition === 'Right' && this.boomerang.direction === true) {
+    if (
+      this.boomerang.posX === this.hero.posX &&
+      this.boomerang.condition === 'Right' &&
+      this.boomerang.direction === true
+    ) {
       this.boomerang.condition = 'Static';
       this.boomerang.posX = this.hero.posX;
     }
@@ -84,6 +92,10 @@ class Game {
     this.intervalPlay = setInterval(() => {
       this.update();
     }, this.interval);
+
+    return new Promise((res, rej) => {
+      this.resolver = res;
+    });
   }
 }
 
