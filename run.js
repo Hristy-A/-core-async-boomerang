@@ -25,6 +25,7 @@ const controller = new Controller();
 const settings = calcSettings(gameSettings);
 
 async function selectPlayer() {
+  console.clear();
   const msg = c.bold.green('\tEnter you nickname:\n\t');
   const userNickName = await controller.getInput(msg, c.bold.yellow);
   return repository.getOrCreatePlayer(userNickName);
@@ -36,7 +37,12 @@ async function startGame(player) {
   controller.changeGame(game);
   const gameResults = await game.play();
   controller.endGame();
-  await repository.recordNewResult(gameResults.name, gameResults.score, gameResults.enemykilled);
+  console.log(gameResults);
+  await repository.recordNewResult(
+    gameResults.name,
+    Math.round(gameResults.score),
+    gameResults.enemykilled,
+  );
 }
 
 (async () => {
