@@ -1,6 +1,6 @@
 var player = require('play-sound')((opts = {}));
 /* eslint-disable no-undef */
-class Audio {
+module.exports = class Audio {
   static _instance = null;
 
   static get instance() {
@@ -64,12 +64,12 @@ class Audio {
     const canceller = setInterval(() => this._play(track), this.tracksInfo[track].duration);
     this._play(track, canceller);
   }
-}
+};
 
-console.log(Audio.instance);
+// console.log(Audio.instance);
 
-Audio.instance.playInfinity(Audio.MAINMENU);
+// Audio.instance.playInfinity(Audio.MAINMENU);
 
-setTimeout(() => {
-  Audio.instance.stopPlaying(Audio.MAINMENU);
-}, 10000);
+// setTimeout(() => {
+//   Audio.instance.stopPlaying(Audio.MAINMENU);
+// }, 10000);
