@@ -1,7 +1,8 @@
 class PlayerDTO {
-  constructor(name, skin) {
+  constructor(name, skin, boomerang) {
     this.name = name;
     this.skin = skin;
+    this.boomerang = boomerang;
   }
 }
 

@@ -96,9 +96,9 @@ class Repository {
         acc.enemiesKilled += el.enemiesKilled;
         return acc;
       },
-      { score: 0, enemiesKilled: 0 },
+      { score: 0, enemiesKilled: 0 }
     );
-    // console.log(resAllGames);
+    //console.log(resAllGames);
     return resAllGames;
   }
 
@@ -110,7 +110,7 @@ class Repository {
       attributes: ['name'],
       include: {
         model: PlayerSkin,
-        attributes: ['skin'],
+        attributes: ['skin', 'boomerang'],
       },
       where: { name: playerName },
       defaults: {
@@ -130,105 +130,139 @@ class Repository {
         attributes: ['name'],
         include: {
           model: PlayerSkin,
-          attributes: ['skin'],
+          attributes: ['skin', 'boomerang'],
         },
         where: { name: playerName },
         raw: true,
       });
-      res = new PlayerDTO(newPlayer[0].name, newPlayer[0]['PlayerSkin.skin']);
+
+      res = new PlayerDTO(
+        newPlayer[0].name,
+        newPlayer[0]['PlayerSkin.skin'],
+        newPlayer[0]['PlayerSkin.boomerang']
+      );
     } else {
       const playerScore = await this.getFinalResultAllGames(playerName);
-      console.log(playerScore.score);
+      //console.log(playerScore.score);
       if (playerScore.score >= 200 && playerScore.score <= 400) {
-        await Player.update({ skin_id: 2 }, {
-          where: {
-            name: playerName,
-          },
-        });
+        await Player.update(
+          { skin_id: 2 },
+          {
+            where: {
+              name: playerName,
+            },
+          }
+        );
       }
       if (playerScore.score >= 400 && playerScore.score <= 600) {
-        await Player.update({ skin_id: 3 }, {
-          where: {
-            name: playerName,
-          },
-        });
+        await Player.update(
+          { skin_id: 3 },
+          {
+            where: {
+              name: playerName,
+            },
+          }
+        );
       }
       if (playerScore.score >= 600 && playerScore.score <= 800) {
-        await Player.update({ skin_id: 4 }, {
-          where: {
-            name: playerName,
-          },
-        });
+        await Player.update(
+          { skin_id: 4 },
+          {
+            where: {
+              name: playerName,
+            },
+          }
+        );
       }
       if (playerScore.score >= 800 && playerScore.score <= 1000) {
-        await Player.update({ skin_id: 5 }, {
-          where: {
-            name: playerName,
-          },
-        });
+        await Player.update(
+          { skin_id: 5 },
+          {
+            where: {
+              name: playerName,
+            },
+          }
+        );
       }
       if (playerScore.score >= 1000 && playerScore.score <= 1200) {
-        await Player.update({ skin_id: 6 }, {
-          where: {
-            name: playerName,
-          },
-        });
+        await Player.update(
+          { skin_id: 6 },
+          {
+            where: {
+              name: playerName,
+            },
+          }
+        );
       }
       if (playerScore.score >= 1200 && playerScore.score <= 1400) {
-        await Player.update({ skin_id: 7 }, {
-          where: {
-            name: playerName,
-          },
-        });
+        await Player.update(
+          { skin_id: 7 },
+          {
+            where: {
+              name: playerName,
+            },
+          }
+        );
       }
       if (playerScore.score >= 1400 && playerScore.score <= 1600) {
-        await Player.update({ skin_id: 8 }, {
-          where: {
-            name: playerName,
-          },
-        });
+        await Player.update(
+          { skin_id: 8 },
+          {
+            where: {
+              name: playerName,
+            },
+          }
+        );
       }
       if (playerScore.score >= 1600 && playerScore.score <= 1800) {
-        await Player.update({ skin_id: 9 }, {
-          where: {
-            name: playerName,
-          },
-        });
+        await Player.update(
+          { skin_id: 9 },
+          {
+            where: {
+              name: playerName,
+            },
+          }
+        );
       }
       if (playerScore.score >= 1800 && playerScore.score <= 2000) {
-        await Player.update({ skin_id: 10 }, {
-          where: {
-            name: playerName,
-          },
-        });
+        await Player.update(
+          { skin_id: 10 },
+          {
+            where: {
+              name: playerName,
+            },
+          }
+        );
       }
       if (playerScore.score > 2000) {
-        await Player.update({ skin_id: 11 }, {
-          where: {
-            name: playerName,
-          },
-        });
+        await Player.update(
+          { skin_id: 11 },
+          {
+            where: {
+              name: playerName,
+            },
+          }
+        );
       }
-      const a = await Player.findAll(
-        {
-          attributes: ['name'],
-          include: {
-            model: PlayerSkin,
-            attributes: ['skin'],
-          },
-          where: { name: playerName },
-          raw: true,
+      const a = await Player.findAll({
+        attributes: ['name'],
+        include: {
+          model: PlayerSkin,
+          attributes: ['skin', 'boomerang'],
         },
+        where: { name: playerName },
+        raw: true,
+      });
+      //console.log(a);
+      res = new PlayerDTO(
+        a[0].name,
+        a[0]['PlayerSkin.skin'],
+        a[0]['PlayerSkin.boomerang']
       );
-      console.log(a);
-      res = new PlayerDTO(a[0].name, a[0]['PlayerSkin.skin']);
     }
-    console.log(res);
+    //console.log(res);
     return res;
   }
 }
-const rep = new Repository();
-rep.recordNewResult('Naida', 2000, 500);
-rep.getOrCreatePlayer('Naida');
 
 module.exports = Repository;

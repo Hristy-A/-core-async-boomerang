@@ -7,37 +7,48 @@ module.exports = {
       'PlayerSkins',
       [
         {
-          skin: '🤠',
+          skin: '🦞',
+          boomerang: '🍤',
         },
         {
-          skin: '💃',
+          skin: '🦔',
+          boomerang: '🍄',
         },
         {
           skin: '🎅',
+          boomerang: '🎄',
         },
         {
-          skin: '🕴',
+          skin: '🐻',
+          boomerang: '🔥',
         },
         {
           skin: '🧚',
+          boomerang: '🪄',
         },
         {
-          skin: '👮‍♀️',
+          skin: '👮',
+          boomerang: '🔫',
         },
         {
           skin: '🕺',
+          boomerang: '🪃 ',
         },
         {
           skin: '🧝',
+          boomerang: '🏹',
         },
         {
           skin: '🥷',
+          boomerang: '🗡',
+        },
+        {
+          skin: '🦉',
+          boomerang: '🌪',
         },
         {
           skin: '🦸',
-        },
-        {
-          skin: '🧞',
+          boomerang: '🪐',
         },
       ],
       {}
