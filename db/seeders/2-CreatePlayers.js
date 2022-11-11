@@ -8,19 +8,27 @@ module.exports = {
       [
         {
           name: 'Lera',
-          skin_id: 8,
+          skin_id: 3,
         },
         {
           name: 'Naida',
-          skin_id: 6,
+          skin_id: 9,
         },
         {
           name: 'Andrey',
-          skin_id: 2,
+          skin_id: 10,
         },
         {
-          name: 'Artem',
+          name: 'Hristy',
           skin_id: 11,
+        },
+        {
+          name: 'Roma',
+          skin_id: 8,
+        },
+        {
+          name: 'Oleg',
+          skin_id: 6,
         },
       ],
       {}
