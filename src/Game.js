@@ -46,18 +46,26 @@ class Game {
   }
 
   check() {
-    if (this.boomerang.posX - this.hero.posX >= 15) {
-      this.boomerang.condition = 'Left';
+    if (Math.abs(this.boomerang.posX - this.hero.posX) >= 15) {
+      this.boomerang.reverse();
     }
-    if (this.boomerang.posX === this.hero.posX && this.boomerang.condition === 'Left') {
+    if (this.boomerang.posX === this.hero.posX && this.boomerang.condition === 'Left' && this.boomerang.direction === false) {
       this.boomerang.condition = 'Static';
-      this.boomerang.posX = -1;
+      this.boomerang.posX = this.hero.posX;
+    }
+    if (this.boomerang.posX === this.hero.posX && this.boomerang.condition === 'Right' && this.boomerang.direction === true) {
+      this.boomerang.condition = 'Static';
+      this.boomerang.posX = this.hero.posX;
+    }
+    if (this.boomerang.condition === 'Static') {
+      this.boomerang.posX = this.hero.posX;
+      this.boomerang.posY = this.hero.posY;
     }
     if (this.enemyList.collidesWithHero(this.hero)) {
       this.hero.hit(this.intervalPlay);
     }
     if (this.enemyList.collideWithBoomerang(this.boomerang)) {
-      this.boomerang.condition = 'Left';
+      this.boomerang.reverse();
     }
     this.enemyList.killOutOfRange();
   }

@@ -41,9 +41,12 @@ class Hero {
 
   attack(right) {
     if (this.game.boomerang.condition === 'Static') {
+      if (!right) this.game.boomerang.direction = true;
+      if (right) this.game.boomerang.direction = false;
       this.game.boomerang.posX = this.posX;
       this.game.boomerang.posY = this.posY;
       this.game.boomerang.condition = 'Right';
+      if (this.game.boomerang.direction === true) this.game.boomerang.reverse();
     }
   }
 

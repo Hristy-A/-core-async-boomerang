@@ -22,7 +22,7 @@ const runInteractiveConsole = require('./src/keyboard');
   // // TODO: show score and kills enemies
 
   // // Инициализация игры с настройками.
-  const game = new Game(calcSettings(gameSettings), { name: 'test', skin: '🌀' });
+  const game = new Game(calcSettings(gameSettings), { name: 'Andrey', skin: '😡' });
 
   runInteractiveConsole(game);
   game.play();

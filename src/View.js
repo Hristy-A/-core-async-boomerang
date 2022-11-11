@@ -1,4 +1,5 @@
 // Сделаем отдельный класс для отображения игры в консоли.
+const c = require('ansi-colors');
 
 class View {
   constructor(game) {
@@ -21,12 +22,14 @@ class View {
     statusBar = statusBar.padEnd(this.game.width, '  ').concat('\n');
 
     console.clear();
-    console.log(statusBar);
-    console.log(this.game.track.map((row) => row.join('')).join('\n'));
+    console.log(c.red.bold(statusBar));
+    console.log('🟫'.repeat(this.game.width));
+    console.log(c.bgBlack(this.game.track.map((row) => row.join('')).join('\n')));
+    console.log('🟫'.repeat(this.game.width));
     console.log('\n\n');
-    console.log(`Playing: ${this.game.player.name}`);
-    console.log(`Total score: ${this.game.score.toFixed(1)}`);
-    console.log(`Enemies killed: ${this.game.killedEnemiesCount}`);
+    console.log("\x1b[36m%s\x1b[0m", `Playing: ${this.game.player.name}`);
+    console.log(c.yellow.bold.underline(`Total score: ${this.game.score.toFixed(1)}`));
+    console.log(`Enemies killed 💀 : ${this.game.killedEnemiesCount}`);
     console.log(`Created by "${yourTeamName}" with love`);
   }
 }

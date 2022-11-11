@@ -4,6 +4,8 @@
   "description": "Настало время разрабатывать лучшие в мире игры!",
   "main": "runDebug.js",
   "dependencies": {
+    "ansi-colors": "^4.1.3",
+    "chalk": "^5.1.2",
     "find-exec": "^1.0.2",
     "keypress": "^0.2.1",
     "pg": "^8.7.3",
