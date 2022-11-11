@@ -1,26 +1,54 @@
-// Бумеранг является оружием.
-// В дальнейшем можно добавить другое оружие.
-// Тогда можно будет создать класс Weapon и воспользоваться наследованием!
-
 class Boomerang {
-  constructor() {
-    this.skin = '🌀';
-    this.position = 0;
+  constructor(game) {
+    this.skin = game.player.boomerang;
+    this.condition = 'Static';
+    this.game = game;
+    this.moveEveryTick = 2;
+    this.tickCount = 1;
+    this.posX = 0;
+    this.posY = 0;
+    this.direction = true;
+  }
+
+  reverse() {
+    if (this.condition === 'Left') {
+      this.condition = 'Right';
+      return;
+    }
+    if (this.condition === 'Right') this.condition = 'Left';
+  }
+
+  tick() {
+    this.fly();
   }
 
   fly() {
-    this.moveRight();
-    this.moveLeft();
+    if (this.tickCount !== this.moveEveryTick) {
+      this.tickCount += 1;
+      return;
+    }
+
+    if (this.condition === 'Right') {
+      this.moveRight();
+    }
+    if (this.condition === 'Left') {
+      this.moveLeft();
+    }
+    if (this.condition === 'Static') {
+      this.posX = this.game.hero.posX;
+    }
+    this.tickCount = 1;
+    this.game.check();
   }
 
   moveLeft() {
     // Идём влево.
-    this.position -= 1;
+    this.posX -= 1;
   }
 
   moveRight() {
     // Идём вправо.
-    this.position += 1;
+    this.posX += 1;
   }
 }
 
