@@ -30,6 +30,10 @@ module.exports = class Controller {
 
     process.stdin.on('keypress', (ch, key) => {
       if (key) {
+        if (key.name === 'x' && key.ctrl) {
+          audio.disabled = true;
+          audio.instance.stopAll();
+        }
         if (this.mode === this.TYPEMODE) {
           if (key.name === 'return') {
             this.resolver(this.typed);

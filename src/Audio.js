@@ -1,3 +1,5 @@
+const { enabled } = require('ansi-colors');
+
 var player = require('play-sound')((opts = {}));
 /* eslint-disable no-undef */
 module.exports = class Audio {
@@ -8,6 +10,8 @@ module.exports = class Audio {
     this._instance = new Audio();
     return this._instance;
   }
+
+  static disabled = false;
 
   static MAINMENU = 'mainMenu';
   static PLAYING = 'playing';
@@ -36,6 +40,7 @@ module.exports = class Audio {
   }
 
   _play(track, canceller = null) {
+    if (Audio.disabled) return;
     const hash = track + Math.random() * Math.random();
     const tracker = this.player.play(this.tracksInfo[track].path);
     if (canceller !== null && this.currentPlaying.some((playing) => playing.includes(canceller)))
