@@ -1,6 +1,6 @@
 class Boomerang {
   constructor(game) {
-    this.skin = '🌀';
+    this.skin = game.player.boomerang;
     this.condition = 'Static';
     this.game = game;
     this.moveEveryTick = 2;
